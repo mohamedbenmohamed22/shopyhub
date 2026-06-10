@@ -26,10 +26,10 @@ resource "aws_instance" "backend" {
   iam_instance_profile   = aws_iam_instance_profile.backend.name
 
   user_data = templatefile("${path.module}/templates/user_data.sh.tftpl", {
-    aws_region     = var.aws_region
-    ecr_repo_url   = aws_ecr_repository.backend.repository_url
-    image_tag      = var.backend_image_tag
-    ssm_prefix     = local.ssm_prefix
+    aws_region   = var.aws_region
+    ecr_repo_url = aws_ecr_repository.backend.repository_url
+    image_tag    = var.backend_image_tag
+    ssm_prefix   = local.ssm_prefix
   })
 
   metadata_options {

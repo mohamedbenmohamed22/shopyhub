@@ -144,7 +144,7 @@ variable "admin_password" {
 variable "github_repo" {
   description = "GitHub repo allowed to assume the deploy role, as \"owner/name\"."
   type        = string
-  default     = "your-org/lovable-project"
+  default     = "/mohamedbenmohamed22/shopyhub"
 }
 
 ###############################################################################
