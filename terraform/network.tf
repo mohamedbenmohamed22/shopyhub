@@ -49,7 +49,7 @@ resource "aws_security_group" "backend" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "HTTP (CloudFront -> origin / health checks)"
+    description = "HTTP (CloudFront to origin health checks)"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
