@@ -4,7 +4,6 @@ on:
   pull_request:
     branches: [main]
     paths: ["terraform/**"]
-
   workflow_dispatch:
     inputs:
       action:
@@ -14,93 +13,78 @@ on:
         default: plan
 
 concurrency:
-  group: terraform-${{ github.ref }}-${{ github.event.inputs.action }}
+  group: terraform-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
   contents: read
+  id-token: write # assume the AWS role via OIDC
+  pull-requests: write
 
 defaults:
   run:
     working-directory: terraform
 
-
 jobs:
+  # Format + validate without credentials — runs on every PR.
   validate:
     name: fmt & validate
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: hashicorp/setup-terraform@v3
-
       - name: Format check
         run: terraform fmt -check -recursive
-
       - name: Init (no backend)
-        run: terraform init -backend=false -input=false
-
+        run: terraform init -backend=false
       - name: Validate
         run: terraform validate
 
-
+  # Plan / apply against the real account. Requires the secrets below.
   apply:
-    name: Terraform Apply
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply'
+    name: ${{ github.event.inputs.action }}
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: prod
-
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ vars.AWS_REGION }}
-
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
       TF_VAR_jwt_secret: ${{ secrets.JWT_SECRET }}
       TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
       TF_VAR_github_repo: ${{ github.repository }}
       TF_VAR_aws_region: ${{ vars.AWS_REGION }}
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
       - uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        run: terraform init -reconfigure -input=false
-
-      - name: Terraform Plan
+      - run: terraform init
+      - name: Plan
         run: terraform plan -out=tfplan
-
-      - name: Terraform Apply
+      - name: Apply
+        if: github.event.inputs.action == 'apply'
         run: terraform apply -auto-approve tfplan
 
-
   destroy:
-    name: Terraform Destroy
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+    name: Destroy infrastructure
+    if: github.event.inputs.action == 'destroy'
     runs-on: ubuntu-latest
     environment: prod
-
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ vars.AWS_REGION }}
-
       TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
       TF_VAR_jwt_secret: ${{ secrets.JWT_SECRET }}
       TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
       TF_VAR_github_repo: ${{ github.repository }}
       TF_VAR_aws_region: ${{ vars.AWS_REGION }}
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
       - uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        run: terraform init -reconfigure -input=false
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      - run: terraform init
+      - run: terraform destroy -auto-approve
