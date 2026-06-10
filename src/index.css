@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 220 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 10%;
+
+    --primary: 38 92% 50%;
+    --primary-foreground: 220 25% 10%;
+
+    --secondary: 220 15% 92%;
+    --secondary-foreground: 220 25% 20%;
+
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 38 80% 55%;
+    --accent-foreground: 220 25% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gold: 38 92% 50%;
+    --gold-light: 38 85% 65%;
+    --gold-dark: 38 90% 40%;
+    --slate-dark: 220 25% 12%;
+    --cream: 40 30% 96%;
+
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(45, 95%, 60%));
+    --gradient-dark: linear-gradient(180deg, hsl(220, 25%, 8%), hsl(220, 20%, 15%));
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%), hsl(40, 20%, 98%));
+
+    /* Tonal elevation surfaces — color depth instead of shadows.
+       Light theme steps up with a faint warm (brand) tint. */
+    --surface-1: 0 0% 100%;
+    --surface-2: 40 33% 98%;
+    --surface-3: 38 42% 96%;
+
+    /* Shadows disabled — elevation is conveyed by surface color */
+    --shadow-soft: none;
+    --shadow-gold: none;
+    --shadow-elevated: none;
+
+    /* Fonts */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 220 22% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 220 22% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 38 92% 55%;
+    --primary-foreground: 220 25% 8%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 40 15% 85%;
+
+    --muted: 220 18% 16%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 38 85% 60%;
+    --accent-foreground: 220 25% 8%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 18% 20%;
+    --input: 220 18% 20%;
+    --ring: 38 92% 55%;
+
+    /* Dark theme: higher elevation = lighter surface (Material tonal model) */
+    --surface-1: 220 22% 12%;
+    --surface-2: 220 20% 16%;
+    --surface-3: 220 18% 21%;
+
+    --shadow-soft: none;
+    --shadow-gold: none;
+    --shadow-elevated: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .glow-gold {
+    box-shadow: none;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+}
+
+/* Animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Color-based "alive" pulse for the winner card — animates the border tint,
+   not a shadow/glow. */
+@keyframes pulse-glow {
+  0%, 100% {
+    border-color: hsl(var(--primary) / 0.3);
+  }
+  50% {
+    border-color: hsl(var(--primary) / 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--gold) / 0) 0%,
+    hsl(var(--gold) / 0.3) 50%,
+    hsl(var(--gold) / 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }

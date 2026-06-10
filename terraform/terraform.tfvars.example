@@ -1,0 +1,18 @@
+# Copy to terraform.tfvars and fill in. Secrets should come from your shell
+# (export TF_VAR_db_password=...) or CI secrets — do NOT commit real values.
+
+aws_region         = "eu-west-1"
+availability_zones = ["eu-west-1a", "eu-west-1b"]
+
+project     = "potw"
+environment = "prod"
+
+instance_type = "t3.small"
+
+# GitHub repo allowed to assume the deploy role.
+github_repo = "your-org/lovable-project"
+
+# --- Secrets (prefer TF_VAR_* env vars over this file) ---
+# db_password    = "..."
+# jwt_secret     = "..."
+# admin_password = "..."

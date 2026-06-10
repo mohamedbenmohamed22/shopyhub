@@ -1,0 +1,60 @@
+#!/bin/bash
+set -euxo pipefail
+
+# --- Install Docker + AWS CLI v2 ---
+dnf update -y
+dnf install -y docker unzip
+systemctl enable --now docker
+
+if ! command -v aws >/dev/null 2>&1; then
+  curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip -q /tmp/awscliv2.zip -d /tmp
+  /tmp/aws/install
+fi
+
+# --- Deploy script: pull the image, refresh env from SSM, (re)start the container ---
+# CD reruns this via SSM Run Command after pushing a new image tag.
+cat >/usr/local/bin/deploy-backend.sh <<'DEPLOY'
+#!/bin/bash
+set -euo pipefail
+
+AWS_REGION="${aws_region}"
+ECR_REPO="${ecr_repo_url}"
+IMAGE_TAG="$${1:-${image_tag}}"
+SSM_PREFIX="${ssm_prefix}"
+ENV_FILE="/opt/app/.env"
+
+mkdir -p /opt/app
+
+# Build the env file from SSM parameters (decrypting SecureStrings).
+: > "$ENV_FILE"
+aws ssm get-parameters-by-path \
+  --region "$AWS_REGION" \
+  --path "$SSM_PREFIX/" \
+  --with-decryption \
+  --recursive \
+  --query "Parameters[].[Name,Value]" --output text |
+while IFS=$'\t' read -r name value; do
+  key="$${name##*/}"
+  printf '%s=%s\n' "$key" "$value" >> "$ENV_FILE"
+done
+echo "NODE_ENV=production" >> "$ENV_FILE"
+
+# Authenticate to ECR and pull.
+aws ecr get-login-password --region "$AWS_REGION" \
+  | docker login --username AWS --password-stdin "$${ECR_REPO%/*}"
+docker pull "$ECR_REPO:$IMAGE_TAG"
+
+# Replace the running container (host :80 -> container :3000).
+docker rm -f backend 2>/dev/null || true
+docker run -d --name backend --restart unless-stopped \
+  -p 80:3000 --env-file "$ENV_FILE" \
+  "$ECR_REPO:$IMAGE_TAG"
+
+docker image prune -f
+DEPLOY
+chmod +x /usr/local/bin/deploy-backend.sh
+
+# First boot: try to deploy. Safe to fail if no image has been pushed yet —
+# the CD pipeline performs the first real deployment.
+/usr/local/bin/deploy-backend.sh || echo "initial deploy skipped (no image yet)"

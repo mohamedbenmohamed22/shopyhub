@@ -1,0 +1,202 @@
+// Prisma schema — Product of the Week backend
+// Run: npx prisma migrate dev --name init && npx prisma db seed
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductStatus {
+  draft
+  published
+  archived
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  cancelled
+}
+
+enum PaymentMethod {
+  cash_on_delivery
+}
+
+enum SubStatus {
+  subscribed
+  unsubscribed
+}
+
+enum AdminRole {
+  admin
+  staff
+}
+
+model Category {
+  id             String    @id @default(uuid()) @db.Uuid
+  name           String    @unique
+  slug           String    @unique
+  isDefault      Boolean   @default(false) @map("is_default")
+  // Property definitions inherited by products in this category.
+  // Shape: [{ key, label, type: "text" | "number" | "boolean" }]
+  propertySchema Json      @default("[]") @map("property_schema")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  products       Product[]
+
+  @@map("categories")
+}
+
+model Governorate {
+  id          Int     @id @default(autoincrement()) @db.SmallInt
+  name        String  @unique
+  deliveryFee Decimal @default(7.000) @map("delivery_fee") @db.Decimal(8, 3)
+  active      Boolean @default(true)
+  orders      Order[]
+
+  @@map("governorates")
+}
+
+model Product {
+  id              String        @id @default(uuid()) @db.Uuid
+  slug            String        @unique
+  name            String
+  tagline         String
+  description     String
+  imageUrl        String        @map("image_url") // primary / cover image
+  images          String[]      @default([]) // additional gallery images
+  // Category-inherited property values + product-specific extensions: { [key]: value }
+  properties      Json          @default("{}")
+  categoryId      String?       @map("category_id") @db.Uuid
+  link            String?
+  price           Decimal?      @db.Decimal(10, 3) // TND
+  weekNumber      Int?          @map("week_number") @db.SmallInt
+  year            Int?          @db.SmallInt
+  stock           Int           @default(100) // units available for COD ordering
+  votesCount      Int           @default(0) @map("votes_count")
+  isCurrentWinner Boolean       @default(false) @map("is_current_winner")
+  status          ProductStatus @default(published)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  category    Category?       @relation(fields: [categoryId], references: [id])
+  tags        Tag[]           @relation("ProductTags")
+  orderItems  OrderItem[]
+  votes       Vote[]
+  wonEditions WeeklyEdition[] @relation("EditionWinner")
+
+  @@index([status])
+  @@index([categoryId])
+  @@map("products")
+}
+
+model Tag {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @unique
+  slug      String    @unique
+  color     String? // hex like #e11, used for the badge
+  createdAt DateTime  @default(now()) @map("created_at")
+  products  Product[] @relation("ProductTags")
+
+  @@map("tags")
+}
+
+model WeeklyEdition {
+  id              String    @id @default(uuid()) @db.Uuid
+  weekNumber      Int       @map("week_number") @db.SmallInt
+  year            Int       @db.SmallInt
+  winnerProductId String?   @map("winner_product_id") @db.Uuid
+  votingOpensAt   DateTime? @map("voting_opens_at")
+  votingClosesAt  DateTime? @map("voting_closes_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  winner Product? @relation("EditionWinner", fields: [winnerProductId], references: [id])
+  votes  Vote[]
+
+  @@unique([year, weekNumber])
+  @@map("weekly_editions")
+}
+
+model Vote {
+  id               String   @id @default(uuid()) @db.Uuid
+  productId        String   @map("product_id") @db.Uuid
+  editionId        String   @map("edition_id") @db.Uuid
+  voterFingerprint String   @map("voter_fingerprint")
+  ipAddress        String?  @map("ip_address") @db.Inet
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  product Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  edition WeeklyEdition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+
+  @@unique([editionId, voterFingerprint])
+  @@index([productId])
+  @@map("votes")
+}
+
+model Order {
+  id            String        @id @default(uuid()) @db.Uuid
+  orderNumber   String        @unique @map("order_number")
+  fullName      String        @map("full_name")
+  phone         String
+  governorateId Int           @map("governorate_id") @db.SmallInt
+  address       String
+  status        OrderStatus   @default(pending)
+  paymentMethod PaymentMethod @default(cash_on_delivery) @map("payment_method")
+  subtotal      Decimal       @db.Decimal(10, 3)
+  deliveryFee   Decimal       @default(0) @map("delivery_fee") @db.Decimal(10, 3)
+  total         Decimal       @db.Decimal(10, 3)
+  notes         String?
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  governorate Governorate @relation(fields: [governorateId], references: [id])
+  items       OrderItem[]
+
+  @@index([status])
+  @@index([phone])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid()) @db.Uuid
+  orderId     String  @map("order_id") @db.Uuid
+  productId   String? @map("product_id") @db.Uuid
+  productName String  @map("product_name")
+  quantity    Int
+  unitPrice   Decimal @map("unit_price") @db.Decimal(10, 3)
+  lineTotal   Decimal @map("line_total") @db.Decimal(10, 3)
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model Subscriber {
+  id             String    @id @default(uuid()) @db.Uuid
+  email          String    @unique
+  status         SubStatus @default(subscribed)
+  confirmed      Boolean   @default(false)
+  unsubscribeToken String  @unique @map("unsubscribe_token")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  unsubscribedAt DateTime? @map("unsubscribed_at")
+
+  @@map("subscribers")
+}
+
+model AdminUser {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         AdminRole @default(staff)
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("admin_users")
+}
