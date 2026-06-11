@@ -39,4 +39,4 @@ USER node
 EXPOSE 3000
 
 # Apply pending migrations at boot, then start the API.
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/main.js"]
