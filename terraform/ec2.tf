@@ -52,6 +52,8 @@ resource "aws_instance" "backend" {
     ssm_prefix   = local.ssm_prefix
   })
 
+  user_data_replace_on_change = true
+
   metadata_options {
     http_tokens   = "required" # IMDSv2 only (DevSecOps: blocks SSRF credential theft)
     http_endpoint = "enabled"
