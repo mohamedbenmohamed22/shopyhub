@@ -47,3 +47,8 @@ output "github_deploy_role_arn" {
   description = "Role ARN for the GitHub Actions deploy workflow (AWS_DEPLOY_ROLE_ARN)."
   value       = aws_iam_role.github_deploy.arn
 }
+
+output "ssh_private_key_ssm_path" {
+  description = "SSM Parameter path for the SSH private key."
+  value       = aws_ssm_parameter.ssh_private_key.name
+}

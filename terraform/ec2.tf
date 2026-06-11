@@ -12,9 +12,23 @@ data "aws_ami" "al2023" {
   }
 }
 
+resource "tls_private_key" "backend" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "aws_key_pair" "backend" {
   key_name   = "${local.name}-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = tls_private_key.backend.public_key_openssh
+}
+
+# Store the private key securely so it can be retrieved by the user.
+resource "aws_ssm_parameter" "ssh_private_key" {
+  name        = "${local.ssm_prefix}/SSH_PRIVATE_KEY"
+  description = "Private key for SSH access to backend EC2"
+  type        = "SecureString"
+  value       = tls_private_key.backend.private_key_pem
+  tags        = { Name = "${local.name}-ssh-key" }
 }
 
 # Stable public address used as the CloudFront API origin.
