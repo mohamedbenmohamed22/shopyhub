@@ -28,16 +28,17 @@ mkdir -p /opt/app
 
 # Build the env file from SSM parameters (decrypting SecureStrings).
 : > "$ENV_FILE"
+
+# Use jq for robust parsing. Filter out the SSH key (multi-line) which is not for the app.
 aws ssm get-parameters-by-path \
   --region "$AWS_REGION" \
   --path "$SSM_PREFIX/" \
   --with-decryption \
   --recursive \
-  --query "Parameters[].[Name,Value]" --output text |
-while IFS=$'\t' read -r name value; do
-  key="$${name##*/}"
-  printf '%s=%s\n' "$key" "$value" >> "$ENV_FILE"
-done
+  --query "Parameters[*].{Name:Name,Value:Value}" \
+  --output json | \
+  jq -r '.[] | select(.Name | endswith("SSH_PRIVATE_KEY") | not) | "\(.Name | split("/") | last)=\(.Value)"' > "$ENV_FILE"
+
 echo "NODE_ENV=production" >> "$ENV_FILE"
 
 # Authenticate to ECR and pull.
