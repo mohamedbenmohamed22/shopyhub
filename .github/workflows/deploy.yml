@@ -31,9 +31,9 @@ jobs:
         run: |
           set -euo pipefail
           aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - > /tmp/outputs.json
-
           cat /tmp/outputs.json
-          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' /tmp/outputs.json >> $GITHUB_ENV
+          # Extract only the .value string from each entry
+          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value.value)"' /tmp/outputs.json >> $GITHUB_ENV
 
       - name: Debug ECR variable
         run: |
@@ -84,14 +84,10 @@ jobs:
 
       - name: Load Terraform Outputs from S3
         run: |
-          # aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - | \
-          # jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' >> $GITHUB_ENV
-
           set -euo pipefail
           aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - > /tmp/outputs.json
-
-          cat /tmp/outputs.json
-          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' /tmp/outputs.json >> $GITHUB_ENV
+          # Extract only the .value string from each entry
+          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value.value)"' /tmp/outputs.json >> $GITHUB_ENV
 
       - uses: actions/setup-node@v4
         with:
