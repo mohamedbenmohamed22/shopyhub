@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euxo pipefail
 
-# --- Install Docker + AWS CLI v2 ---
+# --- Install Docker + jq + AWS CLI v2 ---
 dnf update -y
-dnf install -y docker unzip
+dnf install -y docker jq unzip
 systemctl enable --now docker
 
 if ! command -v aws >/dev/null 2>&1; then
@@ -27,9 +27,10 @@ ENV_FILE="/opt/app/.env"
 mkdir -p /opt/app
 
 # Build the env file from SSM parameters (decrypting SecureStrings).
-: > "$ENV_FILE"
-
-# Use jq for robust parsing. Filter out the SSH key (multi-line) which is not for the app.
+# 1. Get all parameters under the prefix.
+# 2. Filter out the SSH key (not for the app).
+# 3. Ensure the key name (last part of path) is not empty.
+# 4. Format as KEY='VALUE' (single quotes handle most special characters).
 aws ssm get-parameters-by-path \
   --region "$AWS_REGION" \
   --path "$SSM_PREFIX/" \
@@ -37,7 +38,11 @@ aws ssm get-parameters-by-path \
   --recursive \
   --query "Parameters[*].{Name:Name,Value:Value}" \
   --output json | \
-  jq -r '.[] | select(.Name | endswith("SSH_PRIVATE_KEY") | not) | "\(.Name | split("/") | last)=\(.Value)"' > "$ENV_FILE"
+  jq -r '.[] | 
+    select(.Name | endswith("SSH_PRIVATE_KEY") | not) | 
+    (.Name | split("/") | last) as $key | 
+    select($key != "") | 
+    "\($key)=\(.Value)"' > "$ENV_FILE"
 
 echo "NODE_ENV=production" >> "$ENV_FILE"
 
