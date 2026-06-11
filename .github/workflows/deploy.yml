@@ -24,7 +24,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.DEPLY_BACKEND_ARN }}
+          role-to-assume: ${{ secrets.BACKEND_ARN_DEPLOY }}
           aws-region: "eu-north-1"
 
       - name: Load Terraform Outputs from S3
