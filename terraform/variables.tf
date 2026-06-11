@@ -5,7 +5,7 @@
 variable "aws_region" {
   description = "AWS region to deploy into."
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-north-1"
 }
 
 variable "availability_zones" {
@@ -15,7 +15,7 @@ variable "availability_zones" {
     runs in the first zone.
   EOT
   type        = list(string)
-  default     = ["eu-west-1a", "eu-west-1b"]
+  default     = ["eu-north-1a", "eu-north-1b"]
 
   validation {
     condition     = length(var.availability_zones) >= 2
@@ -144,7 +144,7 @@ variable "admin_password" {
 variable "github_repo" {
   description = "GitHub repo allowed to assume the deploy role, as \"owner/name\"."
   type        = string
-  default     = "/mohamedbenmohamed22/shopyhub"
+  default     = "mohamedbenmohamed22/shopyhub"
 }
 
 ###############################################################################

@@ -83,3 +83,24 @@ resource "aws_s3_bucket_policy" "frontend_cloudfront" {
     }]
   })
 }
+
+resource "aws_s3_object" "terraform_outputs" {
+  provider = aws.us_east_1
+  # This is your state bucket
+  bucket       = "potw-tfstate-121546003208"
+  key          = "prod/outputs.json"
+  content_type = "application/json"
+  # We manually build the map of outputs we want to save
+  content = jsonencode({
+    cloudfront_url             = "https://${aws_cloudfront_distribution.main.domain_name}"
+    api_base_url               = "https://${aws_cloudfront_distribution.main.domain_name}/api/v1"
+    backend_public_ip          = aws_eip.backend.public_ip
+    rds_endpoint               = aws_db_instance.main.address
+    ecr_repository_url         = aws_ecr_repository.backend.repository_url
+    frontend_bucket            = aws_s3_bucket.frontend.bucket
+    images_bucket              = aws_s3_bucket.images.bucket
+    github_deploy_role_arn     = aws_iam_role.github_deploy.arn
+    cloudfront_distribution_id = aws_cloudfront_distribution.main.id
+    backend_instance_id        = aws_instance.backend.id
+  })
+}
