@@ -71,6 +71,12 @@ jobs:
         if: github.event.inputs.action == 'apply'
         run: terraform apply -auto-approve tfplan
 
+      - name: Sync Outputs to S3
+        if: github.event.inputs.action == 'apply'
+        run: |
+          terraform output -json > outputs.json
+          aws s3 cp outputs.json s3://potw-tfstate-121546003208/prod/outputs.json
+
   destroy:
     name: Destroy infrastructure
     if: github.event.inputs.action == 'destroy'

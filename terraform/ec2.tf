@@ -12,6 +12,11 @@ data "aws_ami" "al2023" {
   }
 }
 
+resource "aws_key_pair" "backend" {
+  key_name   = "${local.name}-key"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 # Stable public address used as the CloudFront API origin.
 resource "aws_eip" "backend" {
   domain = "vpc"
@@ -24,6 +29,7 @@ resource "aws_instance" "backend" {
   subnet_id              = aws_subnet.public[0].id
   vpc_security_group_ids = [aws_security_group.backend.id]
   iam_instance_profile   = aws_iam_instance_profile.backend.name
+  key_name               = aws_key_pair.backend.key_name
 
   user_data = templatefile("${path.module}/templates/user_data.sh.tftpl", {
     aws_region   = var.aws_region
@@ -38,7 +44,7 @@ resource "aws_instance" "backend" {
   }
 
   root_block_device {
-    volume_size = 20
+    volume_size = 30
     volume_type = "gp3"
     encrypted   = true
   }
