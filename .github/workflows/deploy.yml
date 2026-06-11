@@ -29,8 +29,16 @@ jobs:
 
       - name: Load Terraform Outputs from S3
         run: |
-          aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - | \
-          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' >> $GITHUB_ENV
+          set -euo pipefail
+          aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - > /tmp/outputs.json
+
+          cat /tmp/outputs.json
+          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' /tmp/outputs.json >> $GITHUB_ENV
+
+      - name: Debug ECR variable
+        run: |
+          echo "ECR_REPOSITORY_URL=[$ECR_REPOSITORY_URL]"
+          echo "IMAGE_TAG=[$IMAGE_TAG]"
 
       - name: Log in to Amazon ECR
         id: ecr
@@ -76,8 +84,14 @@ jobs:
 
       - name: Load Terraform Outputs from S3
         run: |
-          aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - | \
-          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' >> $GITHUB_ENV
+          # aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - | \
+          # jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' >> $GITHUB_ENV
+
+          set -euo pipefail
+          aws s3 cp s3://potw-tfstate-121546003208/prod/outputs.json - > /tmp/outputs.json
+
+          cat /tmp/outputs.json
+          jq -r 'to_entries | .[] | "\(.key|ascii_upcase)=\(.value)"' /tmp/outputs.json >> $GITHUB_ENV
 
       - uses: actions/setup-node@v4
         with:
