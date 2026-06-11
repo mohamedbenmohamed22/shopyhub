@@ -57,11 +57,11 @@ variable "public_subnet_cidrs" {
 
 variable "ssh_cidr" {
   description = <<-EOT
-    Optional CIDR allowed to SSH (port 22) to the instance. Leave empty to keep
-    SSH closed and manage the box exclusively through AWS SSM Session Manager.
+    Optional CIDR allowed to SSH (port 22) to the instance. Defaults to "0.0.0.0/0"
+    (open to the world) for easier access, but can be restricted for better security.
   EOT
   type        = string
-  default     = ""
+  default     = "0.0.0.0/0"
 }
 
 ###############################################################################
