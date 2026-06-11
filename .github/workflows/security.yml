@@ -15,6 +15,7 @@ concurrency:
 permissions:
   contents: read
   security-events: write # upload SARIF to the Security tab
+  actions: read          # required for CodeQL telemetry
 
 jobs:
   # --- Secret scanning ---
@@ -66,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: aquasecurity/trivy-action@0.28.0
+      - uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: fs
           scan-ref: .
@@ -86,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: aquasecurity/trivy-action@0.28.0
+      - uses: aquasecurity/trivy-action@v0.28.0
         with:
           scan-type: config
           scan-ref: terraform
