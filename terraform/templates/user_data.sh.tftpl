@@ -28,9 +28,9 @@ mkdir -p /opt/app
 
 # Build the env file from SSM parameters (decrypting SecureStrings).
 # 1. Get all parameters under the prefix.
-# 2. Filter out the SSH key (not for the app).
-# 3. Ensure the key name (last part of path) is not empty.
-# 4. Format as KEY='VALUE' (single quotes handle most special characters).
+# 2. Extract the key name (last part of the path).
+# 3. Filter out SSH_PRIVATE_KEY and any empty keys.
+# 4. Format as KEY="VALUE" with double quotes.
 aws ssm get-parameters-by-path \
   --region "$AWS_REGION" \
   --path "$SSM_PREFIX/" \
@@ -39,9 +39,8 @@ aws ssm get-parameters-by-path \
   --query "Parameters[*].{Name:Name,Value:Value}" \
   --output json | \
   jq -r '.[] | 
-    select(.Name | endswith("SSH_PRIVATE_KEY") | not) | 
     (.Name | split("/") | last) as $key | 
-    select($key != "") | 
+    select($key != "SSH_PRIVATE_KEY" and $key != "") | 
     "\($key)=\(.Value)"' > "$ENV_FILE"
 
 echo "NODE_ENV=production" >> "$ENV_FILE"
