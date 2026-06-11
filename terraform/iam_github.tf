@@ -87,6 +87,20 @@ data "aws_iam_policy_document" "github_deploy" {
     actions   = ["ssm:GetCommandInvocation", "ssm:ListCommandInvocations"]
     resources = ["*"]
   }
+
+  statement {
+  sid = "TerraformOutputsRead"
+
+  actions = [
+    "s3:GetObject",
+    "s3:ListBucket"
+  ]
+
+  resources = [
+    "arn:aws:s3:::potw-tfstate-121546003208",
+    "arn:aws:s3:::potw-tfstate-121546003208/prod/*"
+  ]
+}
 }
 
 resource "aws_iam_role_policy" "github_deploy" {
