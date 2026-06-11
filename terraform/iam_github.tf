@@ -89,18 +89,18 @@ data "aws_iam_policy_document" "github_deploy" {
   }
 
   statement {
-  sid = "TerraformOutputsRead"
+    sid = "TerraformOutputsRead"
 
-  actions = [
-    "s3:GetObject",
-    "s3:ListBucket"
-  ]
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
 
-  resources = [
-    "arn:aws:s3:::potw-tfstate-121546003208",
-    "arn:aws:s3:::potw-tfstate-121546003208/prod/*"
-  ]
-}
+    resources = [
+      "arn:aws:s3:::potw-tfstate-121546003208",
+      "arn:aws:s3:::potw-tfstate-121546003208/prod/*"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "github_deploy" {
