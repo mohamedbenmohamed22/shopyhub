@@ -6,7 +6,7 @@
 
 locals {
   ssm_prefix     = "/${local.name}"
-  cloudfront_url = "https://${aws_cloudfront_distribution.main.domain_name}"
+  cloudfront_url = "https://${var.domain_name}"
   database_url   = "postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.main.address}:5432/${var.db_name}?schema=public"
   images_public  = "https://${aws_s3_bucket.images.bucket}.s3.${var.aws_region}.amazonaws.com"
 

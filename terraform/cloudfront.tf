@@ -1,3 +1,10 @@
+# Fetch the Issued ACM certificate for the custom domain (must be in us-east-1).
+data "aws_acm_certificate" "main" {
+  provider = aws.us_east_1
+  domain   = var.domain_name
+  statuses = ["ISSUED"]
+}
+
 # Managed AWS policies (referenced by name so we don't hardcode IDs).
 data "aws_cloudfront_cache_policy" "optimized" {
   name = "Managed-CachingOptimized"
@@ -24,6 +31,8 @@ resource "aws_cloudfront_distribution" "main" {
   default_root_object = "index.html"
   comment             = "${local.name} storefront + API"
   price_class         = "PriceClass_100"
+
+  aliases = [var.domain_name]
 
   # --- Origin 1: React app in S3 ---
   origin {
@@ -86,7 +95,9 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = data.aws_acm_certificate.main.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = { Name = "${local.name}-cdn" }

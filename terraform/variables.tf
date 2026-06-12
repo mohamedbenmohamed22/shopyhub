@@ -147,6 +147,12 @@ variable "github_repo" {
   default     = "mohamedbenmohamed22/shopyhub"
 }
 
+variable "domain_name" {
+  description = "Custom domain name for the storefront and API."
+  type        = string
+  default     = "benmohamed.site"
+}
+
 ###############################################################################
 # Misc
 ###############################################################################
