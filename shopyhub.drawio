@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== PUBLIC INTERNET GROUP ===== -->
+    <mxCell id="g_internet" value="Public Internet" style="whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#1a3a7a;verticalLabelPosition=bottom;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=#1a3a7a;align=center;rounded=1;arcSize=5;" vertex="1" parent="1">
+      <mxGeometry x="40" y="60" width="220" height="240" as="geometry" />
+    </mxCell>
+
+    <!-- User Browser: label above -->
+    <mxCell id="lbl_user" value="User Browser" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#1a3a7a;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="60" y="85" width="100" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_user" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#1a3a7a;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.user;" vertex="1" parent="1">
+      <mxGeometry x="80" y="108" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Developer Laptop: label above -->
+    <mxCell id="lbl_dev" value="Developer Laptop" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#1a3a7a;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="155" y="85" width="115" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_dev" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#1a3a7a;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.management_console;" vertex="1" parent="1">
+      <mxGeometry x="175" y="108" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ===== AWS CLOUD OUTER GROUP ===== -->
+    <mxCell id="g_aws" value="AWS Cloud — eu-north-1" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#fafafa;strokeColor=#232F3E;fontSize=14;fontStyle=1;fontColor=#232F3E;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="290" y="20" width="1330" height="1100" as="geometry" />
+    </mxCell>
+
+    <!-- ===== GLOBAL SERVICES GROUP ===== -->
+    <mxCell id="g_global" value="Global Services" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#fff3e0;strokeColor=#bf5000;fontSize=13;fontStyle=1;fontColor=#bf5000;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="310" y="60" width="380" height="230" as="geometry" />
+    </mxCell>
+
+    <!-- CloudFront: label above -->
+    <mxCell id="lbl_cf" value="CloudFront Distribution" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="320" y="105" width="140" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_cf" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#6600cc;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudfront;" vertex="1" parent="1">
+      <mxGeometry x="350" y="128" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- WAF: label above -->
+    <mxCell id="lbl_waf" value="WAF — Security" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="490" y="105" width="110" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_waf" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#b30000;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.waf;" vertex="1" parent="1">
+      <mxGeometry x="515" y="128" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ===== VPC GROUP ===== -->
+    <mxCell id="g_vpc" value="VPC: 10.0.0.0/16" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#e8f4fd;strokeColor=#0a5a8a;fontSize=13;fontStyle=1;fontColor=#0a5a8a;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="310" y="330" width="900" height="720" as="geometry" />
+    </mxCell>
+
+    <!-- ===== PUBLIC SUBNET GROUP ===== -->
+    <mxCell id="g_public_subnet" value="Public Subnet" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_public_subnet;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#e6f4e6;strokeColor=#2d6a2d;fontSize=13;fontStyle=1;fontColor=#2d6a2d;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="330" y="395" width="630" height="580" as="geometry" />
+    </mxCell>
+
+    <!-- Elastic IP: label above -->
+    <mxCell id="lbl_eip" value="Elastic IP: 13.51.130.244" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="490" y="440" width="155" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_eip" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#c05000;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elastic_ip_address;" vertex="1" parent="1">
+      <mxGeometry x="537" y="463" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- EC2 Instance subgroup -->
+    <mxCell id="g_ec2" value="EC2: Backend Server" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_ec2_instance_contents;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#fffde7;strokeColor=#b36b00;fontSize=12;fontStyle=1;fontColor=#b36b00;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="350" y="565" width="570" height="330" as="geometry" />
+    </mxCell>
+
+    <!-- Docker Engine: label above -->
+    <mxCell id="lbl_docker" value="Docker Engine" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="365" y="618" width="100" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_docker" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#232F3E;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.container_1;" vertex="1" parent="1">
+      <mxGeometry x="385" y="641" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- NestJS App: label above -->
+    <mxCell id="lbl_app" value="NestJS Container (Port 3000)" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="540" y="618" width="185" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_app" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#c0006e;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;" vertex="1" parent="1">
+      <mxGeometry x="600" y="641" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- SSM Agent: label above -->
+    <mxCell id="lbl_agent" value="SSM Agent" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="770" y="618" width="90" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_agent" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#c0006e;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.systems_manager;" vertex="1" parent="1">
+      <mxGeometry x="785" y="641" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- SG EC2: label above -->
+    <mxCell id="lbl_sg_ec2" value="SG: Ports 80, 22" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="460" y="790" width="115" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_sg_ec2" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#b30000;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.security_group;" vertex="1" parent="1">
+      <mxGeometry x="480" y="813" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ===== PRIVATE SUBNET GROUP ===== -->
+    <mxCell id="g_private_subnet" value="Private Subnet" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_private_subnet;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#ede7f6;strokeColor=#5b2d8e;fontSize=13;fontStyle=1;fontColor=#5b2d8e;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="990" y="395" width="200" height="330" as="geometry" />
+    </mxCell>
+
+    <!-- RDS PostgreSQL: label above -->
+    <mxCell id="lbl_rds" value="RDS: PostgreSQL" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1020" y="453" width="115" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_rds" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#0a4d8a;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;" vertex="1" parent="1">
+      <mxGeometry x="1050" y="476" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- SG RDS: label above -->
+    <mxCell id="lbl_sg_rds" value="SG: Port 5432" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1030" y="578" width="100" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_sg_rds" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#b30000;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.security_group;" vertex="1" parent="1">
+      <mxGeometry x="1050" y="601" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ===== MANAGEMENT & STORAGE GROUP ===== -->
+    <mxCell id="g_storage" value="Management &amp; Storage" style="shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_management_and_governance;grStroke=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#e8eaf6;strokeColor=#1a237e;fontSize=13;fontStyle=1;fontColor=#1a237e;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1250" y="60" width="350" height="800" as="geometry" />
+    </mxCell>
+
+    <!-- S3 Frontend: label above -->
+    <mxCell id="lbl_s3_front" value="S3: Frontend Assets" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1360" y="105" width="125" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_s3_front" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#2d6a00;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+      <mxGeometry x="1385" y="128" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- S3 Terraform State: label above -->
+    <mxCell id="lbl_s3_state" value="S3: Terraform State" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1360" y="298" width="125" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_s3_state" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#2d6a00;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+      <mxGeometry x="1385" y="321" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ECR: label above -->
+    <mxCell id="lbl_ecr" value="ECR: Docker Images" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1355" y="493" width="125" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_ecr" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#c0006e;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecr;" vertex="1" parent="1">
+      <mxGeometry x="1385" y="516" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- SSM Parameter Store: label above -->
+    <mxCell id="lbl_ssm" value="SSM Parameter Store" style="text;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];autosize=1;fontColor=#232F3E;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="1350" y="688" width="135" height="20" as="geometry" />
+    </mxCell>
+    <mxCell id="node_ssm" value="" style="outlineConnect=0;gradientColor=none;strokeColor=none;fillColor=#c0006e;align=center;html=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.systems_manager_parameter_store;" vertex="1" parent="1">
+      <mxGeometry x="1385" y="711" width="60" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ============================= -->
+    <!-- ===== TRAFFIC FLOW EDGES ==== -->
+    <!-- ============================= -->
+
+    <!-- User → CloudFront (HTTPS) -->
+    <mxCell id="e1" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0a4d8a;fontColor=#0a4d8a;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_user" target="node_cf" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- CloudFront → S3 Frontend (Static Assets) -->
+    <mxCell id="e2" value="Static Assets" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#2d6a00;fontColor=#2d6a00;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_cf" target="node_s3_front" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- CloudFront → EIP (API Requests) -->
+    <mxCell id="e3" value="API Requests" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6600cc;fontColor=#6600cc;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_cf" target="node_eip" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- EIP → NestJS App (Port 80) -->
+    <mxCell id="e4" value="Port 80" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#b36b00;fontColor=#b36b00;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_eip" target="node_app" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- NestJS App → RDS (Private SQL) -->
+    <mxCell id="e5" value="Private SQL" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0a4d8a;fontColor=#0a4d8a;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_app" target="node_rds" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ============================= -->
+    <!-- === MANAGEMENT FLOW EDGES === -->
+    <!-- ============================= -->
+
+    <!-- Dev → SSM Agent (SSM Session) -->
+    <mxCell id="e6" value="SSM Session" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5b2d8e;fontColor=#5b2d8e;fontStyle=1;fontSize=11;dashed=1;strokeWidth=2;" edge="1" source="node_dev" target="node_agent" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Dev → SG EC2 (SSH Tunnel) -->
+    <mxCell id="e7" value="SSH Tunnel" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#b30000;fontColor=#b30000;fontStyle=1;fontSize=11;dashed=1;strokeWidth=2;" edge="1" source="node_dev" target="node_sg_ec2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- SSM Agent → SSM Parameter Store (Fetch Secrets) -->
+    <mxCell id="e8" value="Fetch Secrets" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#c0006e;fontColor=#c0006e;fontStyle=1;fontSize=11;dashed=1;strokeWidth=2;" edge="1" source="node_agent" target="node_ssm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Docker → ECR (Pull Image) -->
+    <mxCell id="e9" value="Pull Image" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#c0006e;fontColor=#c0006e;fontStyle=1;fontSize=11;dashed=1;strokeWidth=2;" edge="1" source="node_docker" target="node_ecr" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- App ↔ Docker (Port 3000) -->
+    <mxCell id="e10" value="Port 3000" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#b36b00;fontColor=#b36b00;fontStyle=1;fontSize=11;strokeWidth=2;" edge="1" source="node_app" target="node_docker" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ============================= -->
+    <!-- == SECURITY GROUP DOTTED ==== -->
+    <!-- ============================= -->
+
+    <!-- SG_EC2 → RDS (Allows) -->
+    <mxCell id="e11" value="Allows" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#b30000;fontColor=#b30000;fontStyle=1;fontSize=11;dashed=1;endArrow=open;endFill=0;strokeWidth=2;" edge="1" source="node_sg_ec2" target="node_rds" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- SG_RDS → SG_EC2 (Only From) -->
+    <mxCell id="e12" value="Only From" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#5b2d8e;fontColor=#5b2d8e;fontStyle=1;fontSize=11;dashed=1;endArrow=open;endFill=0;strokeWidth=2;" edge="1" source="node_sg_rds" target="node_sg_ec2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
