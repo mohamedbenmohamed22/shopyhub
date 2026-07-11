@@ -34,12 +34,6 @@ export const Header = () => {
             >
               This Week
             </Link>
-             <Link
-              to="/#past-winners"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Past Winners
-            </Link>
           </nav>
 
           {/* CTA */}
