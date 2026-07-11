@@ -45,7 +45,7 @@ jobs:
   # Plan / apply against the real account. Requires the secrets below.
   apply:
     name: ${{ github.event.inputs.action }}
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy'
     runs-on: ubuntu-latest
     environment: prod
     env:
