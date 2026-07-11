@@ -3,8 +3,11 @@ data "aws_ami" "al2023" {
   owners      = ["amazon"]
 
   filter {
+    # "al2023-ami-2*" (not "al2023-ami-*") excludes the "minimal" variant,
+    # which is sometimes published more recently and would otherwise win
+    # under most_recent — it doesn't ship amazon-ssm-agent preinstalled.
     name   = "name"
-    values = ["al2023-ami-*-x86_64"]
+    values = ["al2023-ami-2*-x86_64"]
   }
   filter {
     name   = "virtualization-type"

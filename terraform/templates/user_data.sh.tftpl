@@ -57,6 +57,14 @@ docker run -d --name backend --restart unless-stopped \
   "$ECR_REPO:$IMAGE_TAG"
 
 docker image prune -f
+
+# Seed reference/demo data (upserts only, safe to re-run every deploy).
+# Retry: the container runs `prisma migrate deploy` before the app starts,
+# so the DB may not be migrated yet on the first attempt.
+for i in 1 2 3 4 5; do
+  docker exec backend node dist/prisma/seed.js && break
+  echo "seed attempt $i failed, retrying in 5s..." && sleep 5
+done
 DEPLOY
 chmod +x /usr/local/bin/deploy-backend.sh
 
