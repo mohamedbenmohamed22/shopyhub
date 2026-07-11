@@ -40,12 +40,6 @@ export const Header = () => {
             >
               Past Winners
             </Link>
-              <Link
-              to="/#subscribe"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Subscribe
-            </Link>
           </nav>
 
           {/* CTA */}
